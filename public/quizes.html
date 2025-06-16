@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz de Inglês</title>
+  <link rel="stylesheet" href="css/styles.css">
+ 
+</head>
+<body>
+
+    <header>
+    <div>
+      <h3>Aprendendo Inglês</h3>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="quizes.html">Quizes</a></li>
+        <li><a href="simplepresent.html">Simple present</a></li>
+        <li><a href="simplefuture.html">Simple future</a></li>
+        <li><a href="verbotobe.html">Verbo to be</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="quiz-container">
+    <h1>Quiz de Inglês</h1>
+    <div id="question-container">
+      <p id="question">Carregando pergunta...</p>
+      <div id="answer-buttons"></div>
+    </div>
+    <button id="next-btn">Próxima</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the plural of 'child'?",
+        answers: ["Childs", "Children", "Childes", "Childen"],
+        correct: "Children"
+      },
+      {
+        question: "Translate: 'Eu estou com fome'.",
+        answers: ["I am hungry", "I have hungry", "I am angry", "I have hungry"],
+        correct: "I am hungry"
+      },
+      {
+        question: "Choose the correct form: 'She ___ a doctor.'",
+        answers: ["is", "are", "am", "be"],
+        correct: "is"
+      },
+      {
+        question: "What color is the sky on a clear day?",
+        answers: ["Green", "Yellow", "Blue", "Red"],
+        correct: "Blue"
+      },
+      {
+        question: "Which one is a fruit?",
+        answers: ["Carrot", "Apple", "Lettuce", "Broccoli"],
+        correct: "Apple"
+      },
+      {
+        question: "Complete: 'I ___ to school every day.'",
+        answers: ["go", "goes", "gone", "going"],
+        correct: "go"
+      },
+      {
+        question: "What is the opposite of 'big'?",
+        answers: ["Tall", "Wide", "Small", "Heavy"],
+        correct: "Small"
+      },
+      {
+        question: "Translate: 'Qual é o seu nome?'",
+        answers: ["Where are you from?", "What’s your name?", "How old are you?", "What do you do?"],
+        correct: "What’s your name?"
+      },
+      {
+        question: "Choose the correct option: 'They ___ playing soccer now.'",
+        answers: ["is", "are", "am", "be"],
+        correct: "are"
+      },
+      {
+        question: "What is the correct translation of 'livro'?",
+        answers: ["Book", "Table", "Pen", "Chair"],
+        correct: "Book"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const questionElement = document.getElementById("question");
+    const answerButtons = document.getElementById("answer-buttons");
+    const nextButton = document.getElementById("next-btn");
+    const resultElement = document.getElementById("result");
+
+    function showQuestion() {
+      resetState();
+      const currentQuestion = questions[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+
+      currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.textContent = answer;
+        button.onclick = () => selectAnswer(answer);
+        answerButtons.appendChild(button);
+      });
+    }
+
+    function resetState() {
+      nextButton.style.display = "none";
+      answerButtons.innerHTML = "";
+      resultElement.textContent = "";
+    }
+
+    function selectAnswer(selected) {
+      const correct = questions[currentQuestionIndex].correct;
+      if (selected === correct) {
+        score++;
+      }
+
+      Array.from(answerButtons.children).forEach(button => {
+        button.disabled = true;
+        if (button.textContent === correct) {
+          button.style.backgroundColor = "#2ecc71";
+        } else if (button.textContent === selected) {
+          button.style.backgroundColor = "#e74c3c";
+        }
+      });
+
+      nextButton.style.display = "inline-block";
+    }
+
+    nextButton.addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      questionElement.textContent = "Quiz finalizado!";
+      answerButtons.innerHTML = "";
+      nextButton.style.display = "none";
+      resultElement.textContent = `Você acertou ${score} de ${questions.length} questões.`;
+    }
+
+    showQuestion();
+  </script>
+
+<footer> 
+  <p>&copy; 2025 Aprendendo inglês</p>
+</footer>
+
+</body>
+</html>
